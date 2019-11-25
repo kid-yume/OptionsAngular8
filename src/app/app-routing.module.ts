@@ -1,8 +1,34 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './helpers/auth.guard';
 
 
-const routes: Routes = [];
+import { HomeComponent } from './components/home/home.component';
+import { AuthenticationComponent } from './components/authentication/authentication.component';
+import { AuthenticationRequiredComponent } from './components/authentication-required/authentication-required.component';
+
+
+
+const routes: Routes = [
+  {
+      path: '',
+      redirectTo: '/home',
+      pathMatch: 'full',
+  },
+  {
+      path: 'home',
+      component: HomeComponent,
+      canActivate: [AuthGuard]
+  },
+  {
+      path: 'login',
+      component: AuthenticationComponent,
+  },
+  {
+      path: 'register',
+      component: AuthenticationRequiredComponent ,
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

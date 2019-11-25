@@ -1,0 +1,37 @@
+@import '../../shared/standard';
+
+.mat-card{
+  color: #7b1fa2;
+}
+.example-card {
+  width: 400px;
+  margin: 10% auto;
+}
+.mat-card-title{
+  font-size: 16px;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+::ng-deep.mat-form-field-label {
+ /*change color of underline*/
+ color: #7b1fa2 !important;
+}
+
+::ng-deep.mat-form-field-underline {
+ /*change color of underline*/
+ background-color: #7b1fa2 !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+/*change color of underline when focused*/
+//background-color: green !important;;
+}
