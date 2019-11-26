@@ -42,6 +42,7 @@ export class UserService {
           return this.authService.whenSignedIn();
         }),
         switchMap((user) => {
+          console.log("building User");
           this.user = new User();
           this.user.id = 1;
           this.user.firstName = "Aaron";

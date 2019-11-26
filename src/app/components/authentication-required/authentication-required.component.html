@@ -1,4 +1,4 @@
-<mat-card class="example-card" >
+<mat-card class="example-card" *ngIf="showCard" >
    <mat-card-title>Login</mat-card-title>
    <mat-card-content>
      <form class="example-form" [formGroup]="loginForm">
@@ -6,17 +6,31 @@
          <tr>
            <td>
              <mat-form-field class="example-full-width">
-               <input matInput placeholder="Username" formControlName="passwordCtrl" required>
+               <input matInput placeholder="First Name" formControlName="firstNameCtrl" required>
              </mat-form-field>
            </td>
          </tr>
-         <tr>
-           <td>
-             <mat-form-field class="example-full-width">
-               <input matInput placeholder="Password" formControlName="firstCtrl" required>
-             </mat-form-field>
-           </td>
+        <tr>
+          <td>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Last Name" formControlName="emailCtrl" required>
+            </mat-form-field>
+          </td>
         </tr>
+        <tr>
+          <td>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Email" formControlName="passwordCtrl" required>
+            </mat-form-field>
+          </td>
+        </tr>
+       <tr>
+         <td>
+           <mat-form-field class="example-full-width">
+             <input matInput placeholder="Password" formControlName="firstCtrl" required>
+           </mat-form-field>
+         </td>
+      </tr>
        </table>
      </form>
      <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { User } from  '../models/user.model';
+import { PusherService } from '../services/pusher.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,24 @@ export class AuthenticationService {
     private isSignedInSubject = new ReplaySubject<User>(1);
 
 
-     constructor(private http: HttpClient) {
+     constructor(private http: HttpClient,
+                 private pusherService: PusherService) {
          this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
          this.currentUser = this.currentUserSubject.asObservable();
-         this.apiLoadedSubject.next(true);
-         this.apiLoadedSubject.complete();
+         //Awaiting the websocket to open and connect to the Login Channel
+         this.pusherService.messages.subscribe((message:any) => {});
+
+         this.pusherService.channelLoginConnect.subscribe((message: any) => {
+           let cName = message.channelName;
+           message = message.data;
+           this.pusherService.messages.next({"data":{channel:cName,auth:message.auth},event:"pusher:subscribe"});
+           this.apiLoadedSubject.next(true);
+           this.apiLoadedSubject.complete();
+         });
+
+
+         //this.apiLoadedSubject.next(true);
+         //this.apiLoadedSubject.complete();
      }
 
      public getcurrentUserValue(): User {
@@ -47,7 +61,7 @@ export class AuthenticationService {
 
          /** Returns a stream of the client's loading status. */
       whenLoaded(): Observable<boolean> {
-        return this.apiLoadedSubject.asObservable();
+        return this.pusherService.whenPusherLoginReady();
       }
 
       /** Returns a stream of the client's signin status. */

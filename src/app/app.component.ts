@@ -25,6 +25,10 @@ export class AppComponent {
   )
   {
 
+    this.authService.whenLoaded().subscribe(() => {
+      this.showSpinner = false;
+    });
+/*
     this.pusherService.channelConnectSignal.subscribe((message:any) =>
     {
 
@@ -86,7 +90,7 @@ export class AppComponent {
 
 
 
-       });
+       });*/
 
     /*
     userService.whenUserLoaded().subscribe(user => {

@@ -37,6 +37,11 @@ export class AuthenticationComponent implements OnInit {
 
 
     });
+    this.authService.whenLoaded().subscribe(() => {
+      this.showCard = true;
+    });
+
+
 
 }
 }
