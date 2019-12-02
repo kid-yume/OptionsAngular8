@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, HostListener } from '@angular/core';
 import { UserService } from './services/user.service'
 import { AuthenticationService } from './services/authentication.service';
 import { PusherService } from './services/pusher.service';
@@ -12,10 +12,18 @@ import {User} from './models/user.model';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  @HostListener('window:beforeunload', [ '$event' ])
+ beforeUnloadHander(event) {
+   // ...
+   this.websiteClosed();
+ }
+
   title = 'OptionsrUs';
   user: User;
   showSpinner = true;
   count = 0;
+
 
   constructor(
       readonly authService: AuthenticationService,
@@ -97,6 +105,10 @@ export class AppComponent {
       this.user = user;
     });*/
 
+  }
+
+  public websiteClosed(){
+    this.authService.unSubscribe();
   }
 
 

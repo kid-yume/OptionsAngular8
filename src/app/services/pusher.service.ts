@@ -36,6 +36,7 @@ export class PusherService {
   socket$!:any;
   test!:any;
   loaded = false;
+  channel ='';
   private pusherLoadedSubject = new ReplaySubject<boolean>(1);
   private channelLoadedSubject = new ReplaySubject<boolean>(1);
   private subject: Subject<MessageEvent>;
@@ -65,6 +66,7 @@ export class PusherService {
     this.messages.subscribe((message:any) => {});
     //console.log("runningnot");
   }
+
   private StartSocket()
   {
     console.log('wss://wss.pusherapp.com:443/app/'+environment.pusher.key+"?client=js&version=3.1&protocol=5");
@@ -74,11 +76,11 @@ export class PusherService {
                    retry(1);
                    if(!this.repeatData)
                    {console.log("running");this.repeatData = JSON.stringify({junk:"bob"})}
-                   //console.log( "Last Received:"+JSON.stringify(this.repeatData)+' and \n Received: '+ JSON.stringify(response.data));
+                   console.log( "Last Received:"+JSON.stringify(this.repeatData)+' and \n Received: '+ JSON.stringify(response.data));
                    let compareMe = this.isEquivalent(this.repeatData,response.data);
                    if(!compareMe)
                    {
-                     //console.log( "Not Equivalent: \nLast Received:"+JSON.stringify(this.repeatData)+' and \n Received: '+ JSON.stringify(response.data));
+                     console.log( "Not Equivalent: \nLast Received:"+JSON.stringify(this.repeatData)+' and \n Received: '+ JSON.stringify(response.data));
                      this.repeatData = response.data;
                      //console.log('Trying .. '+ JSON.stringify(response.data)+ " and \n storing "+JSON.stringify(this.repeatData));
                      return JSON.parse(response.data);
@@ -92,7 +94,7 @@ export class PusherService {
 
 
                     }),
-                 map((response:any):any =>{
+                 map( (response:any):any =>  {
                   try{
                       var analyze = JSON.parse(response.data);
                       if(analyze.hasOwnProperty('socket_id'))
@@ -100,6 +102,7 @@ export class PusherService {
                         console.log("initial join channel message"+analyze.socket_id);
                         this._socket_id = analyze.socket_id;
                         this.joinChannel('private-masterLoginChannel');
+
                       }
                       else
                       {
@@ -131,12 +134,24 @@ export class PusherService {
   {
     //let test = JSON.parse(data);
 
-    //console.log("event \n"+ data.event);
+    console.log("event \n"+ data.channel);
     switch((data.event+"")){
       case "pusher_internal:subscription_succeeded":
-        this.channelLoadedSubject.next(true);
-        this.channelLoadedSubject.complete();
+        if(data.channel == ('private-'+this._socket_id+"channel"))
+        {
+          this.channelLoadedSubject.next(true);
+          this.channelLoadedSubject.complete();
+          this.messages.next({channel:('private-masterLoginChannel'),"data":{channelN:('private-'+this._socket_id+"channel")},event:"client-Register"});
+        }else{
+          this.channel = 'private-'+this._socket_id+"channel";
+          this.joinChannel('private-'+this._socket_id+"channel");
+        }
         break;
+      case "client-LoginResponse":
+        var data = JSON.parse(data.data);
+        console.log("data "+data.status);
+        break;
+
     }
 
 
@@ -225,7 +240,10 @@ export class PusherService {
     var eventNameB = JSON.parse(b);
 
     if(JSON.stringify(eventNameA.event) === JSON.stringify(eventNameB.event)){
-      return true;
+      if(JSON.stringify(eventNameA.channel) === JSON.stringify(eventNameB.channel))
+      {return true;}
+      else
+      {return false}
     }
 
 
@@ -260,6 +278,12 @@ export class PusherService {
     }
   whenPusherLoginReady():Observable<boolean>{
       return this.channelLoadedSubject.asObservable();
+  }
+
+
+  public LeaveChannel(){
+    this.messages.next({channel:('private-'+this._socket_id+"channel"),"data":{channelN:("eracving")},event:"client-Register"});
+
   }
 
 

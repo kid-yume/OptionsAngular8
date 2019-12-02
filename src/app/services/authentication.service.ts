@@ -44,6 +44,9 @@ export class AuthenticationService {
      }
 
      login(username, password) {
+       this.pusherService.messages.next({channel:this.pusherService.channel,"data":{username:"bobby",password:"1234"},event:"client-Login"});
+
+
       /*   return this.http.post<any>(`${config.apiUrl}/users/authenticate`, { username, password })
              .pipe(map(user => {
                  // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -67,6 +70,10 @@ export class AuthenticationService {
       /** Returns a stream of the client's signin status. */
       whenSignedIn(): Observable<User> {
         return this.isSignedInSubject.asObservable();
+      }
+      public unSubscribe(){
+        this.pusherService.LeaveChannel();
+
       }
 
 

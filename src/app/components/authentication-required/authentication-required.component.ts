@@ -40,6 +40,10 @@ export class AuthenticationRequiredComponent implements OnInit, OnDestroy {
     });
 
 }
+  public register()
+  {
+    this.authService.login();
+  }
 
   ngOnDestroy(){
     this.showCard = false;

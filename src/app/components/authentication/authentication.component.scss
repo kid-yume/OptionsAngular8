@@ -1,7 +1,7 @@
 @import '../../shared/standard';
 
 .mat-card{
-  color: #7b1fa2;
+  color: mat-color($primary);
 }
 .example-card {
   width: 400px;
@@ -15,20 +15,23 @@
   min-width: 150px;
   max-width: 500px;
   width: 100%;
+
 }
 
 .example-full-width {
   width: 100%;
 }
 
+
+
 ::ng-deep.mat-form-field-label {
- /*change color of underline*/
- color: #7b1fa2 !important;
+ /*change color of field*/
+ color: mat-color($accent) !important;
 }
 
 ::ng-deep.mat-form-field-underline {
  /*change color of underline*/
- background-color: #7b1fa2 !important;
+ background-color: mat-color($primary) !important;
 }
 
 ::ng-deep.mat-form-field-ripple {

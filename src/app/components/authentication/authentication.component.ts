@@ -44,4 +44,20 @@ export class AuthenticationComponent implements OnInit {
 
 
 }
+
+// convenience getter for easy access to form fields
+ get f() { return this.loginForm.controls; }
+
+
+
+
+    public login()
+    {
+      this.authService.login(this.f.firstCtrl.value,this.f.passwordCtrl.value);
+    }
+
+
+
+
+
 }
