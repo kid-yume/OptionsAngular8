@@ -1,4 +1,52 @@
-<div class="">
-  <button mat-raised-button (click)="register()" >WatchList</button>
-  <button a routerLink="/login" mat-button>RankList</button>
+<div>
+  <button mat-button [color]="buttonColor" (click)="SelectWatchList()" >WatchList</button>
+  <button mat-button [color]="rankButtonColor" (click)="SelectRankList()" style="float:right;">RankList</button>
 </div>
+<table mat-table [dataSource]="watchListDataSource" class="watchlist-table" [hidden]="(selected != 0)" >
+  <!-- Contract/Expiration Column Column -->
+  <ng-container matColumnDef="contract">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let contract"> {{contract.contract}} </td>
+  </ng-container>
+
+  <!-- Strike Price  Column -->
+  <ng-container matColumnDef="strike_price">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let contract"> {{contract.strike_price | currency}} </td>
+  </ng-container>
+
+<!-- Price Column -->
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let contract"> {{contract.price | currency}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="watchListDisplayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: watchListDisplayedColumns;"></tr>
+</table>
+
+<table mat-table [dataSource]="rankingDataSource" class="watchlist-table" [hidden]="(selected == 0)" >
+  <!-- Ranking Number Column -->
+  <ng-container matColumnDef="No.">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let rank"> {{rank.ranking}} </td>
+  </ng-container>
+
+  <!-- Company Name Column -->
+  <ng-container matColumnDef="Company Name">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let rank"> {{rank.companyName}} </td>
+  </ng-container>
+
+  <!--total Change Column -->
+  <ng-container matColumnDef="Total Change">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let rank" [ngClass]="{
+            'positive' : rank.totalChange> 0,
+            'negative' : rank.totalChange < 0
+         }"> {{rank.totalChange}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="rankingDisplayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: rankingDisplayedColumns;"></tr>
+</table>

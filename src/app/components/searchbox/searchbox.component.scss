@@ -1,0 +1,29 @@
+
+$white: #fff;
+$black: rgba(0, 0, 0, .87);
+$border-color: rgba(0, 0, 0, .1);
+$search-bar-background-color: #1565c0;
+
+
+
+.search-box {
+  border: solid 1px $border-color;
+  border-radius: 2px;
+  font-size: 16px;
+  line-height: 34px;
+  outline: none;
+  padding: 6px 16px;
+  padding-left: 54px;
+  width: 84%;
+}
+
+
+.search-box-focused {
+  background-color: $white;
+  color: $black;
+}
+
+.search-box-unfocused {
+  background-color: $search-bar-background-color;
+  color: $white;
+}

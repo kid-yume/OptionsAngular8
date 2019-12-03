@@ -1,0 +1,20 @@
+.watchlist-table{
+  width:100%;
+  border-spacing:0;
+}
+
+td.mat-cell {
+  border-bottom: 0px;
+  border-bottom-style: none;
+}
+tr.mat-header-row {
+    height: 0px;
+}
+
+.positive {
+    color: green;
+}
+
+.negative {
+    color: red;
+}

@@ -256,6 +256,9 @@ export class PusherService {
     var eventNameB = JSON.parse(b);
 
     if(JSON.stringify(eventNameA.event) === JSON.stringify(eventNameB.event)){
+      if(eventNameB.event == "client-Register" )
+      {return true}
+
       if(eventNameB.event == "client-LoginResponse" )
       {return false}
 

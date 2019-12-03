@@ -2,7 +2,9 @@
 </div>
 <div #bodyC class="body-container">
   <div class ="menu" *ngIf="currentUser" >
-    <p>junk</p>
+    <!-- <p>Options Are Us</p> -->
+    <app-searchbox>
+    </app-searchbox>
   </div>
   <div class="options mat-elevation-z3" [hidden]="showCard" #optionDiv  >
     <app-watchlist></app-watchlist>
