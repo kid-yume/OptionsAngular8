@@ -40,9 +40,18 @@ export class AuthenticationRequiredComponent implements OnInit, OnDestroy {
     });
 
 }
+
+
+// convenience getter for easy access to form fields
+ get f() { return this.loginForm.controls; }
+
+
   public register()
   {
-    this.authService.login();
+    this.authService.login(this.f.firstCtrl.value,this.f.passwordCtrl.value);
+    this.authService.whenSignedIn().subscribe(() => {
+    this.router.navigateByUrl(this.returnUrl);
+     });
   }
 
   ngOnDestroy(){

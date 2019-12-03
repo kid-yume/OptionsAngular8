@@ -17,6 +17,8 @@ export class AuthenticationService {
     private apiLoadedSubject = new ReplaySubject<boolean>(1);
     /** A subject sending a the client that's signed in. */
     private isSignedInSubject = new ReplaySubject<User>(1);
+    currentUsers!: User;
+
 
 
      constructor(private http: HttpClient,
@@ -25,13 +27,20 @@ export class AuthenticationService {
          this.currentUser = this.currentUserSubject.asObservable();
          //Awaiting the websocket to open and connect to the Login Channel
          this.pusherService.messages.subscribe((message:any) => {});
-
          this.pusherService.channelLoginConnect.subscribe((message: any) => {
            let cName = message.channelName;
            message = message.data;
            this.pusherService.messages.next({"data":{channel:cName,auth:message.auth},event:"pusher:subscribe"});
            this.apiLoadedSubject.next(true);
            this.apiLoadedSubject.complete();
+         });
+         this.pusherService.isSignedInSubject.subscribe( (data:any )=> {
+           this.isSignedIn = true;
+           this.currentUsers = new User();
+           this.currentUsers.id = data.contractsId;
+           this.currentUsers.username = data.username;
+           this.currentUsers.firstName = data.firstName;
+           this.isSignedInSubject.next(this.currentUsers);
          });
 
 
@@ -44,7 +53,8 @@ export class AuthenticationService {
      }
 
      login(username, password) {
-       this.pusherService.messages.next({channel:this.pusherService.channel,"data":{username:"bobby",password:"1234"},event:"client-Login"});
+       this.pusherService.messages.next({channel:this.pusherService.channel,"data":{username:username,password:password},event:"client-Login"});
+
 
 
       /*   return this.http.post<any>(`${config.apiUrl}/users/authenticate`, { username, password })

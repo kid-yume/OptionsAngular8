@@ -11,13 +11,15 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthenticationComponent } from './components/authentication/authentication.component';
 import { AuthenticationRequiredComponent } from './components/authentication-required/authentication-required.component';
+import { WatchlistComponent } from './components/watchlist/watchlist.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     AuthenticationComponent,
-    AuthenticationRequiredComponent
+    AuthenticationRequiredComponent,
+    WatchlistComponent
   ],
   imports: [
     BrowserModule,

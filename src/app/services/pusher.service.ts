@@ -45,6 +45,7 @@ export class PusherService {
   public signal:Subject<any> = new Subject<any>();
   public channelConnectSignal:Subject<any> = new Subject<any>();
   public channelLoginConnect:Subject<any> = new Subject<any>();
+  public isSignedInSubject:Subject<any> = new Subject<any>();
   private ws: any;
   private _socket_id: any;
   private repeatData:any;
@@ -147,9 +148,16 @@ export class PusherService {
           this.joinChannel('private-'+this._socket_id+"channel");
         }
         break;
+      case "pusher:error":
+        this.joinChannel('private-masterLoginChannel');
+        break;
       case "client-LoginResponse":
         var data = JSON.parse(data.data);
         console.log("data "+data.status);
+        if((data.status) == 200)
+        {this.isSignedInSubject.next(data);}
+        else{console.log('fails');}
+
         break;
 
     }
@@ -176,6 +184,14 @@ export class PusherService {
 
                        return datas;
                      });
+
+
+
+
+
+  }
+  public async SuccessfulLogin( data:any )
+  {
 
 
 
@@ -240,10 +256,14 @@ export class PusherService {
     var eventNameB = JSON.parse(b);
 
     if(JSON.stringify(eventNameA.event) === JSON.stringify(eventNameB.event)){
+      if(eventNameB.event == "client-LoginResponse" )
+      {return false}
+
       if(JSON.stringify(eventNameA.channel) === JSON.stringify(eventNameB.channel))
       {return true;}
       else
       {return false}
+
     }
 
 

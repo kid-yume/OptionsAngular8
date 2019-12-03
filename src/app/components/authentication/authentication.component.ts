@@ -37,9 +37,12 @@ export class AuthenticationComponent implements OnInit {
 
 
     });
+
     this.authService.whenLoaded().subscribe(() => {
       this.showCard = true;
     });
+
+
 
 
 
@@ -54,6 +57,10 @@ export class AuthenticationComponent implements OnInit {
     public login()
     {
       this.authService.login(this.f.firstCtrl.value,this.f.passwordCtrl.value);
+      this.authService.whenSignedIn().subscribe(() => {
+        console.log("fired");
+      this.router.navigateByUrl(this.returnUrl);
+       });
     }
 
 

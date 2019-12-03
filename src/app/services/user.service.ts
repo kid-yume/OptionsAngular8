@@ -26,6 +26,8 @@ export class UserService {
       return this.userLoadedSubject.asObservable();
     }
 
+
+
   loadUser(): Observable<User> {
     if (this.user) {
       return this.userLoadedSubject.asObservable();
@@ -41,15 +43,11 @@ export class UserService {
           }
           return this.authService.whenSignedIn();
         }),
-        switchMap((user) => {
-          console.log("building User");
-          this.user = new User();
-          this.user.id = 1;
-          this.user.firstName = "Aaron";
-          this.user.username = "Downing";
-          this.userLoadedSubject.next(this.user);
+        switchMap((user:User) => {
+          console.log("building User"+user.id);
+          this.userLoadedSubject.next(user);
           this.userLoadedSubject.complete();
-          return of(this.user);
+          return of(user);
         }),
     );
   }

@@ -4,11 +4,11 @@
   <div class ="menu" *ngIf="currentUser" >
     <p>junk</p>
   </div>
-  <div class="options mat-elevation-z3" *ngIf="currentUser" #optionDiv  >
-
+  <div class="options mat-elevation-z3" [hidden]="showCard" #optionDiv  >
+    <app-watchlist></app-watchlist>
   </div>
   <div class="content-container">
-    <router-outlet></router-outlet>
+     <router-outlet></router-outlet>
     <div class="content">
       <div #firstChart id="chart">
       </div>
