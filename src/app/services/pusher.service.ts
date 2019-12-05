@@ -115,7 +115,7 @@ export class PusherService {
 
                     catch
                     {
-                      //console.log("null value");
+                      console.log("null value");
                     }
 
 

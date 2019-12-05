@@ -13,6 +13,7 @@ import { AuthenticationComponent } from './components/authentication/authenticat
 import { AuthenticationRequiredComponent } from './components/authentication-required/authentication-required.component';
 import { WatchlistComponent } from './components/watchlist/watchlist.component';
 import { SearchboxComponent } from './components/searchbox/searchbox.component';
+import { OptionlistComponent } from './components/optionlist/optionlist.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { SearchboxComponent } from './components/searchbox/searchbox.component';
     AuthenticationComponent,
     AuthenticationRequiredComponent,
     WatchlistComponent,
-    SearchboxComponent
+    SearchboxComponent,
+    OptionlistComponent
   ],
   imports: [
     BrowserModule,

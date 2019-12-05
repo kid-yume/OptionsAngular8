@@ -66,7 +66,7 @@ export class AppComponent implements OnInit{
      // see András Szepesházi's comment below
      //console.debug("Scroll Event", window.pageYOffset );
      console.log("Scroll Event", window.pageYOffset );
-     if( window.pageYOffset > 100 )
+     if( window.pageYOffset > 66 )
      {
        this.optionsC.nativeElement.style.top = 0;
        //this.optionsC.nativeElement.setProperty("top","0")

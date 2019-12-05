@@ -23,10 +23,21 @@ p {
 }
 .content-container {
   flex: 1 0 0;
+  z-index: 99;
 
 };
-
-
+.flex-2 {
+  flex: 1;
+  width:20%;
+}
+.flex-1 {
+  flex: 1;
+}
+.mat-toolbar.tool-bar {
+  background-color: mat-color($primary);
+  color: opacify($white, .07);
+  z-index: 100 !important;
+};
 
 .menu {
   width:100%;

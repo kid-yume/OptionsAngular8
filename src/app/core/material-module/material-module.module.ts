@@ -3,13 +3,28 @@ import { CommonModule } from '@angular/common';
 
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
-  MatToolbarModule, MatMenuModule,MatIconModule, MatProgressSpinnerModule, MatAutocomplete,
-  MatChipsmodule
+  MatToolbarModule, MatMenuModule,MatIconModule, MatProgressSpinnerModule, MatAutocompleteModule,
+  MatChipsModule
 } from '@angular/material';
+
+import {DragDropModule} from "@angular/cdk/drag-drop"
+import {CdkStepperModule} from '@angular/cdk/stepper';
+import {CdkTableModule} from '@angular/cdk/table';
+import {CdkTreeModule} from '@angular/cdk/tree';
+import {PortalModule} from '@angular/cdk/portal';
+import {ScrollingModule} from '@angular/cdk/scrolling';
+//import {A11yModule} from '@angular/cdk/a11y';
 
 @NgModule({
   imports: [
   CommonModule,
+  CdkTableModule,
+  DragDropModule,
+  CdkStepperModule,
+  CdkTreeModule,
+  PortalModule,
+  ScrollingModule,
+  //AllyModule,
   MatAutocompleteModule,
   MatChipsModule,
   MatToolbarModule,
@@ -24,7 +39,14 @@ import {
   ],
   exports: [
   CommonModule,
+  PortalModule,
+  ScrollingModule,
+  //AllyModule,
   MatAutocompleteModule,
+  CdkTableModule,
+  DragDropModule,
+  CdkStepperModule,
+  CdkTreeModule,
     MatChipsModule,
    MatToolbarModule,
    MatButtonModule,

@@ -2,8 +2,13 @@
 $white: #fff;
 $black: rgba(0, 0, 0, .87);
 $border-color: rgba(0, 0, 0, .1);
-$search-bar-background-color: #1565c0;
+$search-bar-background-color: #03a9f4;
 
+.search-icon {
+  margin-top: 12px;
+  margin-left: 16px;
+  position: absolute;
+}
 
 
 .search-box {
@@ -26,4 +31,14 @@ $search-bar-background-color: #1565c0;
 .search-box-unfocused {
   background-color: $search-bar-background-color;
   color: $white;
+}
+
+::ng-deep.search-box::placeholder {
+ /*change color of field*/
+ color:$black;
+}
+
+::ng-deep.search-box-unfocused::placeholder {
+ /*change color of field*/
+ color:$white;
 }
