@@ -55,6 +55,7 @@ export class PusherService {
 
 
 
+
   constructor(private http: HttpClient) {
 
     //console.log("runningnot12");
@@ -164,6 +165,12 @@ export class PusherService {
 
 
 
+  }
+
+  //using as a means to send messages: Messages are crafted in the component
+  public async sendMessage(message:any)
+  {
+    this.messages.next(message);
   }
 
   //using as a means to go join channels from many things.

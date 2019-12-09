@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PusherService } from '../../services/pusher.service';
 
 
 export interface WatchListItem {
@@ -51,9 +52,12 @@ export class WatchlistComponent implements OnInit {
 
 
 
-  constructor() { }
+  constructor(private pusherService:PusherService) { }
 
   ngOnInit() {
+    console.log("I ran on init");
+    this.pusherService.messages.next({channel:this.pusherService.channel,"data":{},event:"client-InitialStartup"});
+
   }
 
   async SelectWatchList()

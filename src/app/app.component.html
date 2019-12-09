@@ -15,7 +15,7 @@
     </app-searchbox>
   </div>-->
   <div class="options mat-elevation-z3" [hidden]="showCard" #optionDiv  >
-    <app-watchlist></app-watchlist>
+    <app-watchlist *ngIf="!showCard"></app-watchlist>
   </div>
   <div class="content-container">
     <div class="content">
