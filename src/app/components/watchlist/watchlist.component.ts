@@ -200,9 +200,9 @@ public CleanMessage(message:string):string
     }
 
   }
-  async SelectRankList(x:MatTable)
+  async SelectRankList(x:any)
   {
-      x.renderRows();
+    //  x.renderRows();
     if(this.selected == 0)
     {
       console.log("fired");

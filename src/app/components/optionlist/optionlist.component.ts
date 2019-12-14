@@ -63,7 +63,8 @@ export class OptionlistComponent implements OnInit {
   ngOnInit() {
     this.pusherService.InitialSubject.subscribe((message:any) => {
       console.log(message);
-
+      let CurSym = message.ranks;
+      this.currentCompany = CurSym[0].symbol+"";
       let i = 0;
       for(let months in message.calls)
       {
@@ -139,7 +140,7 @@ export class OptionlistComponent implements OnInit {
     //console.log(text,code);
     console.log(code);
 
-    /*
+
     this.CallMonthSelected = true;
     stockChart(this.chartRef.nativeElement, {
 
@@ -149,7 +150,7 @@ export class OptionlistComponent implements OnInit {
         },
 
         title: {
-            text: 'AAPL Options'
+            text: this.currentCompany+' Options'
         },
 
         series: [{
@@ -168,7 +169,7 @@ export class OptionlistComponent implements OnInit {
                 ]
             }
         }]
-    });*/
+    });
   }
 
 }
