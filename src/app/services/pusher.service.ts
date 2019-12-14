@@ -39,6 +39,8 @@ export class PusherService {
   channel ='';
   private pusherLoadedSubject = new ReplaySubject<boolean>(1);
   private channelLoadedSubject = new ReplaySubject<boolean>(1);
+  public HomeSubject = new Subject<any>();
+  public InitialSubject = new Subject<any>();
   private subject: Subject<MessageEvent>;
   private subjectData: Subject<number>;
   public messages: Subject<any>  = new Subject<any>();
@@ -55,7 +57,6 @@ export class PusherService {
 
 
 
-
   constructor(private http: HttpClient) {
 
     //console.log("runningnot12");
@@ -64,8 +65,9 @@ export class PusherService {
       console.log("running");
       this.StartSocket();
       this.loaded = true;
+
     }
-    this.messages.subscribe((message:any) => {});
+    //this.messages.subscribe((message:any) => {});
     //console.log("runningnot");
   }
 
@@ -75,12 +77,13 @@ export class PusherService {
     this.messages = <Subject<any>>this
                .connect('wss://wss.pusherapp.com:443/app/'+environment.pusher.key+"?client=js&version=3.1&protocol=5")
                .pipe(map((response: any): any => {
-                   retry(1);
+                   //retry(1);
                    if(!this.repeatData)
                    {console.log("running");this.repeatData = JSON.stringify({junk:"bob"})}
-                   console.log( "Last Received:"+JSON.stringify(this.repeatData)+' and \n Received: '+ JSON.stringify(response.data));
+                   //console.log( "Last Received:"+JSON.stringify(this.repeatData)+' and \n Received: '+ JSON.stringify(response.data));
                    let compareMe = this.isEquivalent(this.repeatData,response.data);
-                   if(!compareMe)
+                   return JSON.parse(response.data);
+                   /*if(!compareMe)
                    {
                      console.log( "Not Equivalent: \nLast Received:"+JSON.stringify(this.repeatData)+' and \n Received: '+ JSON.stringify(response.data));
                      this.repeatData = response.data;
@@ -92,7 +95,7 @@ export class PusherService {
 
                      this.repeatData = response.data;
                      return null;
-                   }
+                   }*/
 
 
                     }),
@@ -108,7 +111,7 @@ export class PusherService {
                       }
                       else
                       {
-                        console.log("No socket_id message ^_^ \n"+JSON.stringify(response));
+                        //console.log("No socket_id message ^_^ \n"+JSON.stringify(response));
                         this.transportMessage(response);
 
                       }
@@ -136,7 +139,7 @@ export class PusherService {
   {
     //let test = JSON.parse(data);
 
-    console.log("event \n"+ data.channel);
+    //console.log("event \n"+ data.channel);
     switch((data.event+"")){
       case "pusher_internal:subscription_succeeded":
         if(data.channel == ('private-'+this._socket_id+"channel"))
@@ -160,17 +163,27 @@ export class PusherService {
         else{console.log('fails');}
 
         break;
+      case "client-InitialResponse":
+        let enumerableKeys = [];
+        for (let key in data) {
+          enumerableKeys.push(key);
+        }
+        for(let show in enumerableKeys)
+        {
+          //console.log(show);
+        }
+        //console.log(enumerableKeys);
+        var datas = data;
+        //console.log(datas.data);
+        this.HomeSubject.next(datas.data);
+        break;
+
+
 
     }
 
 
 
-  }
-
-  //using as a means to send messages: Messages are crafted in the component
-  public async sendMessage(message:any)
-  {
-    this.messages.next(message);
   }
 
   //using as a means to go join channels from many things.

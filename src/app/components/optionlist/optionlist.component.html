@@ -1,13 +1,25 @@
 <div class="top-holder">
   <span class="middle-align">Calls: </span>
   <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-    <div (click)="logThis(div.innerText)" class="example-box" *ngFor="let timePeriod of timePeriods" cdkDrag #div>{{timePeriod}}</div>
+    <div (click)="CallSelected(div.innerText)" class="example-box" *ngFor="let timePeriod of timePeriods"  cdkDrag #div>{{timePeriod}}</div>
   </div>
 </div>
-<div class="holder">
+<div class="holder" *ngIf="CallMonthSelected">
+    <span class="middle-align">Dates: </span>
+    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+        <div (click)="logThis(div.innerText,div.dataset.code)" class="example-box" *ngFor="let exp of CONTRACT_DATA" [attr.data-code]="exp.code" cdkDrag #div>{{exp.expiration | date}} <br /> {{exp.strike | currency }}</div>
+    </div>
+</div>
+<div class="holder"*ngIf="!CallMonthSelected">
     <span class="middle-align">Puts: </span>
     <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-      <div (click)="logThis(div.innerText)" class="example-box" *ngFor="let timePeriod of timePeriods" cdkDrag #div>{{timePeriod}}</div>
+      <div (click)="logThis(div.innerText)" class="example-box" *ngFor="let timePeriod of timePeriods"  cdkDrag #div>{{timePeriod}}</div>
+    </div>
+</div>
+<div class="holder" *ngIf="MonthSelected">
+    <span class="middle-align">Exp Dates: </span>
+    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+      <div (click)="logThis(div.innerText)" class="example-box" *ngFor="let exp of CONTRACT_DATA" cdkDrag #div>{{exp.expiration}} | date </div>
     </div>
 </div>
 <div #optionChart class="optionGraph-holder">

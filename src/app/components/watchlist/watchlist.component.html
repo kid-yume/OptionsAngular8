@@ -1,6 +1,6 @@
 <div>
   <button mat-button [color]="buttonColor" (click)="SelectWatchList()" >WatchList</button>
-  <button mat-button [color]="rankButtonColor" (click)="SelectRankList()" style="float:right;">RankList</button>
+  <button mat-button [color]="rankButtonColor" (click)="SelectRankList(mytable)" style="float:right;">RankList</button>
 </div>
 <table mat-table [dataSource]="watchListDataSource" class="watchlist-table" [hidden]="(selected != 0)" >
   <!-- Contract/Expiration Column Column -->
@@ -25,7 +25,7 @@
   <tr mat-row *matRowDef="let row; columns: watchListDisplayedColumns;"></tr>
 </table>
 
-<table mat-table [dataSource]="rankingDataSource" class="watchlist-table" [hidden]="(selected == 0)" >
+<table mat-table [dataSource]="rankingDataSource" class="watchlist-table" #mytable [hidden]="(selected == 0)" >
   <!-- Ranking Number Column -->
   <ng-container matColumnDef="No.">
     <th mat-header-cell *matHeaderCellDef></th>
