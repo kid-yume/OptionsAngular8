@@ -43,7 +43,7 @@ export class OptionlistComponent implements OnInit {
   timePeriods = ["", "", ""];
   callExpDates = ["","",""];
   REC_DATA:any  = [];
-  RANK_DATA:any = [];
+  RANK_DATA= [];
   CONTRACT_DATA: contractParams[] = [
     {strike:1,code:"", expiration:new Date()},
   ];
@@ -67,6 +67,70 @@ export class OptionlistComponent implements OnInit {
   constructor(private pusherService: PusherService) { }
 
   ngOnInit() {
+
+    this.pusherService.UpdateSubject.subscribe((message:any) => {
+      console.log("updating...");
+      this.RANK_DATA = message.rankhis;
+      this.currentCompany = message.symbol;
+      let i = 0;
+      for(let months in message.calls)
+      {
+        var d = new Date((Date.now()));
+        d = new Date(d.setMonth(d.getMonth()+i));
+        console.log("Month:"+this.MonthArray[d.getMonth()]+" "+i);
+        this.timePeriods[i] =  this.MonthArray[d.getMonth()];
+        console.log(message.calls[""+this.MonthArray[d.getMonth()]]);
+        let ii = 0;
+        let enumerableKeys = [];
+        for (let key in message.calls[""+this.MonthArray[d.getMonth()]]) {
+          enumerableKeys.push(key);
+        }
+        for(let show in enumerableKeys)
+        {
+          //console.log(show);
+        }
+        console.log(enumerableKeys);
+        console.log("rank history >");
+        console.log(message["rankHis"]);
+
+        //console.log();
+
+        let currentMonth =  message.calls[""+this.MonthArray[d.getMonth()]];
+        console.log(currentMonth);
+        let cc = [];
+        for(let c in currentMonth)
+        {
+          //console.log(c[ii]);
+          let ob = currentMonth;
+          cc.push({strike:parseFloat(ob[ii].strike),code:ob[ii].code,expiration:new Date(ob[ii].expiration + "")});
+          ii++;
+
+        }
+        this.MonthsContracts.set(this.MonthArray[d.getMonth()],cc);
+        this.CONTRACT_DATA = [];
+        i++;
+
+      }
+
+      chart(this.rankRef.nativeElement, {
+
+            xAxis: {
+              type: 'datetime'
+            },
+            yAxis: {
+                reversed: true
+            },
+
+            series: [{
+              name: 'Rank History',
+              data: this.RANK_DATA
+            }]
+          });
+
+        this.RankCompleted = true;
+      console.log(message);
+
+    });
 
     this.pusherService.InitialSubject.subscribe((message:any) => {
       console.log(message);

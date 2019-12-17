@@ -84,18 +84,18 @@ export class WatchlistComponent implements OnInit {
 
     this.pusherService.messages.next({channel:this.pusherService.channel,"data":{},event:"client-InitialStartup"});
     this.pusherService.HomeSubject.subscribe((message:any) => {
-    let convertS = ""+message;
+    let convertS = ""+message.data;
     if(this.lastString === "")
     {
-      this.sb+= convertS.substring(0,message.length-1);
+      this.sb+= convertS.substring(0,message.data.length-1);
 
     }else{
       if(!this.CompareStrings(this.lastString,message))
       {
-        this.sb+= convertS.substring(0,message.length-1);
+        this.sb+= convertS.substring(0,message.data.length-1);
       }
     }
-    this.lastString = message;
+    this.lastString = message.data;
 
 
     //this.sb = this.CleanMessage(this.sb);
@@ -104,6 +104,11 @@ export class WatchlistComponent implements OnInit {
     {
       console.log("before \n"+this.sb);
       this.sb =this.CleanMessage(this.sb);
+      if (message.update == 1 )
+      {
+        this.sb = this.sb.replace("{\"chunk\":\"", "{\"chunk\":");
+        this.sb= this.sb +"}";
+      }
       console.log("after \n"+this.sb);
       let test = JSON.parse(this.sb);
       let enumerableKeys = [];
@@ -116,7 +121,14 @@ export class WatchlistComponent implements OnInit {
       }
       console.log(enumerableKeys);
       console.log(test);
-      this.pusherService.InitialSubject.next({rankhis:test.rankHis,ranks:test.ranks,calls:test.calls,puts:test.puts});
+      if(message.update ==0)
+      {
+        this.pusherService.InitialSubject.next({rankhis:test.rankHis,ranks:test.ranks,calls:test.calls,puts:test.puts});
+      }else{
+        test = test.chunk;
+        this.pusherService.UpdateSubject.next({rankhis:test.rankHis,calls:test.calls,puts:test.puts,sym:test.symbol});
+
+      }
 
       this.sb = "";
 
