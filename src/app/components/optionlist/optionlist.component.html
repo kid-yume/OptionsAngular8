@@ -22,8 +22,13 @@
       <div (click)="logThis(div.innerText)" class="example-box" *ngFor="let exp of CONTRACT_DATA" cdkDrag #div>{{exp.expiration}} | date </div>
     </div>
 </div>
-<div #optionChart class="optionGraph-holder">
+<mat-spinner [style.display]="showSpinner ? 'block' : 'none'" ></mat-spinner>
+
+<div #optionChart class="optionGraph-holder" [hidden]=showSpinner>
   </div>
+
+<div #rankChart class="optionGraph-holder" [hidden]=!RankCompleted>
+</div>
 <!--
 <div class="holder">
 <span class="middle-align">Options Are Us: </span>

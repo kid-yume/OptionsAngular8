@@ -28,6 +28,7 @@ export class WatchlistComponent implements OnInit {
   rankButtonColor ="acent";
   selected = 0;
   sb = "";
+  lastString = "";
   WATCHLIST_DATA: WatchListItem[] = [
     {contract:'December 12',strike_price:39, price:0.40},
     {contract:'December 12',strike_price:39, price:0.40},
@@ -58,7 +59,9 @@ export class WatchlistComponent implements OnInit {
               private changeDetectorRefs: ChangeDetectorRef) { }
 
   ngOnInit() {
-    console.log("I rna on Init");
+    console.log("I ran on Init");
+
+
     this.pusherService.InitialSubject.subscribe((message:any) => {
       let r = [];
       let test = message.ranks;
@@ -78,17 +81,30 @@ export class WatchlistComponent implements OnInit {
       //this.changeDetectorRefs.detectChanges();
 
     });
+
     this.pusherService.messages.next({channel:this.pusherService.channel,"data":{},event:"client-InitialStartup"});
     this.pusherService.HomeSubject.subscribe((message:any) => {
     let convertS = ""+message;
-    this.sb+= convertS.substring(0,message.length-1);
+    if(this.lastString === "")
+    {
+      this.sb+= convertS.substring(0,message.length-1);
+
+    }else{
+      if(!this.CompareStrings(this.lastString,message))
+      {
+        this.sb+= convertS.substring(0,message.length-1);
+      }
+    }
+    this.lastString = message;
+
+
     //this.sb = this.CleanMessage(this.sb);
-    //console.log(this.sb);
+    console.log(this.sb);
     if(this.sb.indexOf("!ENDOFMESSAGE") != -1)
     {
-      //console.log("before \n"+this.sb);
+      console.log("before \n"+this.sb);
       this.sb =this.CleanMessage(this.sb);
-      //console.log("after \n"+this.sb);
+      console.log("after \n"+this.sb);
       let test = JSON.parse(this.sb);
       let enumerableKeys = [];
       for (let key in test) {
@@ -100,8 +116,9 @@ export class WatchlistComponent implements OnInit {
       }
       console.log(enumerableKeys);
       console.log(test);
-      this.pusherService.InitialSubject.next({ranks:test.ranks,calls:test.calls,puts:test.puts});
+      this.pusherService.InitialSubject.next({rankhis:test.rankHis,ranks:test.ranks,calls:test.calls,puts:test.puts});
 
+      this.sb = "";
 
       /*
       let test = JSON.parse(this.sb);
@@ -187,6 +204,16 @@ public CleanMessage(message:string):string
   return returns;
 }
 
+  CompareStrings(x:string,y:string):boolean
+  {
+    if( x === y)
+    {
+      return true
+    }
+    else{
+      return false
+    }
+  }
 
   async SelectWatchList()
   {

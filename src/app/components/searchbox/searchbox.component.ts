@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import {DomSanitizer} from '@angular/platform-browser';
 import { Symbols } from '../../helpers/stock-symbols';
 import { SearchService } from '../../services/search.service';
+import { PusherService } from '../../services/pusher.service';
+
 
 @Component({
   selector: 'app-searchbox',
@@ -14,6 +16,7 @@ import { SearchService } from '../../services/search.service';
 export class SearchboxComponent implements OnInit {
   isFocused!: boolean;
   searchText!: string;
+  selectedText = "";
   hidden = true;
   myControl = new FormControl();
   @ViewChild('searchBox',{static:false}) searchInputElement!: ElementRef;
@@ -25,10 +28,16 @@ export class SearchboxComponent implements OnInit {
 
   constructor(
     private readonly searchService: SearchService,
-
+    private readonly pusherService: PusherService
   ) { }
 
   ngOnInit() {
+    this.pusherService.SymbolSubject.subscribe(symbol => {
+      this.searchText = symbol.symbol;
+      this.searchInputElement.nativeElement.value = symbol.symbol;
+
+    });
+
     this.searchService.getSymbols().subscribe(posts => {
             this.allPosts = posts
             this.hidden = false;
@@ -59,10 +68,10 @@ export class SearchboxComponent implements OnInit {
   // this is where filtering the data happens according to you typed value
   filterCategoryList(val) {
           var categoryList = []
-          if (typeof val != "string") {
+          if (typeof val != "string" ) {
               return [];
           }
-          if (val === '' || val === null) {
+          if (val === '' || val === null || val.length < 2) {
               return [];
           }
           return val ? this.allPosts.filter(s => s.symbol.toLowerCase().indexOf(val.toLowerCase()) != -1)
@@ -114,7 +123,9 @@ export class SearchboxComponent implements OnInit {
   searchTypeSelected(event: MatOptionSelectionChange, model: string) {
     if (event.isUserInput)
     {
-      this.searchInputElement.nativeElement.value = model;
+      //this.searchInputElement.nativeElement.value = model;
+      this.selectedText = model;
+      this.pusherService.messages.next({channel:this.pusherService.channel,"data":{symbol:model},event:"client-CompanyChange"});
       console.log(model +"selected!");
     }
   }

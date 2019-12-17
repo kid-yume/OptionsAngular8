@@ -39,8 +39,11 @@ export class PusherService {
   channel ='';
   private pusherLoadedSubject = new ReplaySubject<boolean>(1);
   private channelLoadedSubject = new ReplaySubject<boolean>(1);
+  //private DataFetching = new Subject<bool>();
   public HomeSubject = new Subject<any>();
+  public GraphSubject = new Subject<any>();
   public InitialSubject = new Subject<any>();
+  public SymbolSubject = new Subject<any>();
   private subject: Subject<MessageEvent>;
   private subjectData: Subject<number>;
   public messages: Subject<any>  = new Subject<any>();
@@ -177,6 +180,15 @@ export class PusherService {
         //console.log(datas.data);
         this.HomeSubject.next(datas.data);
         break;
+      case "client-GraphResponse":
+        var datas = data;
+        //console.log(datas.data);
+        this.GraphSubject.next(datas.data);
+        break;
+
+
+
+
 
 
 
