@@ -123,7 +123,8 @@ export class OptionlistComponent implements OnInit {
 
             series: [{
               name: 'Rank History',
-              data: this.RANK_DATA
+              data: this.RANK_DATA,
+              type:'line'
             }]
           });
 
@@ -197,7 +198,8 @@ export class OptionlistComponent implements OnInit {
 
             series: [{
               name: 'Rank History',
-              data: this.RANK_DATA
+              data: this.RANK_DATA,
+              type:'line'
             }]
           });
 
