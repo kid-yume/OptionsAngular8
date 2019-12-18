@@ -42,6 +42,7 @@ export class OptionlistComponent implements OnInit {
   MonthsContracts = new Map<string, contracts[]>();
   timePeriods = ["", "", ""];
   callExpDates = ["","",""];
+  GraphDataLoading = true;
   REC_DATA:any  = [];
   RANK_DATA= [];
   CONTRACT_DATA: contractParams[] = [
@@ -71,7 +72,8 @@ export class OptionlistComponent implements OnInit {
     this.pusherService.UpdateSubject.subscribe((message:any) => {
       console.log("updating...");
       this.RANK_DATA = message.rankhis;
-      this.currentCompany = message.symbol;
+      this.currentCompany = message.sym.symbol+"";
+      console.log(message.sym);
       let i = 0;
       for(let months in message.calls)
       {
@@ -121,9 +123,14 @@ export class OptionlistComponent implements OnInit {
                 reversed: true
             },
 
+            title: {
+                text: this.currentCompany+' Rank History'
+            },
+
             series: [{
-              name: 'Rank History',
-              data: this.RANK_DATA
+              name: 'Rank',
+              data: this.RANK_DATA,
+              type:'line'
             }]
           });
 
@@ -194,10 +201,14 @@ export class OptionlistComponent implements OnInit {
             yAxis: {
                 reversed: true
             },
+            title: {
+                text: this.currentCompany+' Rank History'
+            },
 
             series: [{
-              name: 'Rank History',
-              data: this.RANK_DATA
+              name: 'Rank',
+              data: this.RANK_DATA,
+              type:'line'
             }]
           });
 

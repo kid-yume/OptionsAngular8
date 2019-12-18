@@ -24,7 +24,7 @@
 </div>
 <mat-spinner [style.display]="showSpinner ? 'block' : 'none'" ></mat-spinner>
 
-<div #optionChart class="optionGraph-holder" [hidden]=showSpinner>
+<div #optionChart class="optionGraph-holder" [hidden]=showSpinner *ngIf=GraphDatatLoading>
   </div>
 
 <div #rankChart class="optionGraph-holder" [hidden]=!RankCompleted>

@@ -111,7 +111,7 @@ export class SearchboxComponent implements OnInit {
    * @param model represents the model (device/shelf/user) to search through.
    */
   search(model: string) {
-  console.log("after pressing enter:"+model)
+  console.log("after pressing enter:"+model);
   }
 
       /**
@@ -125,7 +125,7 @@ export class SearchboxComponent implements OnInit {
     {
       //this.searchInputElement.nativeElement.value = model;
       this.selectedText = model;
-      this.pusherService.messages.next({channel:this.pusherService.channel,"data":{symbol:model},event:"client-CompanyChange"});
+      this.pusherService.messages.next({channel:this.pusherService.channel,"data":{code:"",symbol:model},event:"client-CompanyChange"});
       console.log(model +"selected!");
     }
   }
