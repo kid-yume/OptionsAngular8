@@ -41,7 +41,7 @@ export class WatchlistComponent implements OnInit {
     {ranking:1, companyName:"Apple",totalChange:-10},
     {ranking:2,companyName:"Google", totalChange:-120},
     {ranking:3, companyName:"Nvidia",totalChange:10},
-    {ranking:4,companyName:"Bottom Feeders", totalChange:30},
+    {ranking:4,companyName:"Botttom Feeders", totalChange:30},
 
   ];
 
