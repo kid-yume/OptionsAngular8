@@ -56,7 +56,7 @@ export class PusherService {
   private _socket_id: any;
   private repeatData:any;
   apiURL: string = "https://stocksymbols.azurewebsites.net/api/SignatureTrigger?code=znyU8hQUJY96rNT/AnqxJ2FpOZN56qkAatwtCLcYw3BeNjhQihzZzQ==";
-  pUrl:string = "https://oddioboxappceleratorconnector.azurewebsites.net/api/PusherEventCatcher?code=8AI21C2Y4zYqIbBArFFaMf8373EYoZZOHPFlI52pbbt4BRbK5ZbFrQ==";
+  pUrl:string = "https://stocksymbols.azurewebsites.net/api/PusherAuthenticator?code=ZrzvWl0bTRquYhJLHKtK11cH8dJjYOsxCjhuUYBoZK0P9o1PQ6b6Hg==";
 
 
 
@@ -211,9 +211,9 @@ export class PusherService {
                        console.log('this what yo relaly got'+ JSON.stringify(datas)+"from "+channelName);
                        //this.messages.next(data.auth)
                        //this.signal.next(JSON.parse(data.auth));
-                       if(datas.authFina)
+                       if(datas.auth)
                        {
-                         this.channelLoginConnect.next({data:JSON.parse(JSON.stringify(datas.authFina)),channelName:channelName});
+                         this.channelLoginConnect.next({data:JSON.parse(JSON.stringify(datas)),channelName:channelName});
                        }else{
                           //error retry :/
                           console.log("error");
@@ -343,7 +343,10 @@ export class PusherService {
 
 
   public LeaveChannel(){
-    this.messages.next({channel:('private-'+this._socket_id+"channel"),"data":{channelN:("eracving")},event:"client-Register"});
+    this.messages.next({"data":{channel:"private-masterLoginChannel"},event:"pusher:unsubscribe"});
+    this.messages.next({channel:('private-'+this._socket_id+"channel"),"data":{channelN:("eracving")},event:"client-Unsubscribe"});
+    this.messages.next({"data":{channel:('private-'+this._socket_id+"channel")},event:"pusher:unsubscribe"});
+
 
   }
 
