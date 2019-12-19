@@ -48,5 +48,5 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="rankingDisplayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: rankingDisplayedColumns;"></tr>
+  <tr mat-row *matRowDef="let row; columns: rankingDisplayedColumns;" (click)="getRow(row)"  ></tr>
 </table>

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
   MatToolbarModule, MatMenuModule,MatIconModule, MatProgressSpinnerModule, MatAutocompleteModule,
-  MatChipsModule
+  MatChipsModule, MatSelectModule
 } from '@angular/material';
 
 import {DragDropModule} from "@angular/cdk/drag-drop"
@@ -35,6 +35,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
   MatTableModule,
   MatMenuModule,
   MatIconModule,
+  MatSelectModule,
   MatProgressSpinnerModule
   ],
   exports: [
@@ -56,6 +57,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
    MatTableModule,
    MatMenuModule,
    MatIconModule,
+   MatSelectModule,
    MatProgressSpinnerModule
    ],
 })

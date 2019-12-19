@@ -1,5 +1,5 @@
-<div class="top-holder">
-  <span class="middle-align">Calls: </span>
+<div class="top-holder"  *ngIf="!PutMonthSelected">
+  <span class="middle-align" >Calls: </span>
   <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
     <div (click)="CallSelected(div.innerText)" class="example-box" *ngFor="let timePeriod of timePeriods"  cdkDrag #div>{{timePeriod}}</div>
   </div>
@@ -9,22 +9,25 @@
     <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
         <div (click)="logThis(div.innerText,div.dataset.code)" class="example-box" *ngFor="let exp of CONTRACT_DATA" [attr.data-code]="exp.code" cdkDrag #div>{{exp.expiration | date}} <br /> {{exp.strike | currency }}</div>
     </div>
+    <button class="button" mat-raised-button (click)="resetSelection('call')" >Reset Fields</button>
 </div>
 <div class="holder"*ngIf="!CallMonthSelected">
     <span class="middle-align">Puts: </span>
     <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-      <div (click)="logThis(div.innerText)" class="example-box" *ngFor="let timePeriod of timePeriods"  cdkDrag #div>{{timePeriod}}</div>
+      <div (click)="PutSelected(div.innerText)"  class="example-box" *ngFor="let timePeriod of timePeriods"  cdkDrag #div>{{timePeriod}}</div>
     </div>
-</div>
-<div class="holder" *ngIf="MonthSelected">
-    <span class="middle-align">Exp Dates: </span>
-    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
-      <div (click)="logThis(div.innerText)" class="example-box" *ngFor="let exp of CONTRACT_DATA" cdkDrag #div>{{exp.expiration}} | date </div>
-    </div>
-</div>
-<mat-spinner [style.display]="showSpinner ? 'block' : 'none'" ></mat-spinner>
 
-<div #optionChart class="optionGraph-holder" [hidden]=showSpinner *ngIf=GraphDatatLoading>
+</div>
+<div class="holder" *ngIf="PutMonthSelected && !CallMonthSelected">
+    <span class="middle-align">Dates: </span>
+    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+      <div (click)="logThis(divp.innerText,divp.dataset.code)" class="example-box" *ngFor="let exp of PUT_CONTRACT_DATA" [attr.data-code]="exp.code" cdkDrag #divp>{{exp.expiration | date}} <br /> {{exp.strike | currency }} </div>
+    </div>
+    <button class="button" mat-raised-button (click)="resetSelection('put')" >Reset Fields</button>
+</div>
+<mat-spinner class="graph-loader" [style.display]="GraphLoading ? 'block' : 'none'" ></mat-spinner>
+
+<div #optionChart class="optionGraph-holder" [hidden]=!GraphLoaded>
   </div>
 
 <div #rankChart class="optionGraph-holder" [hidden]=!RankCompleted>

@@ -36,16 +36,23 @@ export class OptionlistComponent implements OnInit {
   currentCompany = "APPL";
   charts!:any;
   CallMonthSelected = false;
+  PutMonthSelected = false;
   showSpinner = false;
   RankCompleted=false;
+  GraphLoaded= false;
+  GraphLoading=false;
   sb ="";
   MonthsContracts = new Map<string, contracts[]>();
+  PutMonthsContracts = new Map<string, contracts[]>();
   timePeriods = ["", "", ""];
   callExpDates = ["","",""];
   GraphDataLoading = true;
   REC_DATA:any  = [];
   RANK_DATA= [];
   CONTRACT_DATA: contractParams[] = [
+    {strike:1,code:"", expiration:new Date()},
+  ];
+  PUT_CONTRACT_DATA: contractParams[] = [
     {strike:1,code:"", expiration:new Date()},
   ];
 
@@ -110,6 +117,35 @@ export class OptionlistComponent implements OnInit {
         }
         this.MonthsContracts.set(this.MonthArray[d.getMonth()],cc);
         this.CONTRACT_DATA = [];
+        i++;
+
+      }
+      i = 0;
+      for(let months in message.puts)
+      {
+        var d2 = new Date((Date.now()));
+        d2 = new Date(d2.setMonth(d2.getMonth()+i));
+        this.timePeriods[i] =  this.MonthArray[d2.getMonth()];
+        let ii = 0;
+        let currentMonth =  message.puts[""+this.MonthArray[d2.getMonth()]];
+
+        let ccp = [];
+        for(let c in currentMonth)
+        {
+          //console.log(c[ii]);
+          let ob = currentMonth;
+          ccp.push({strike:parseFloat(ob[ii].strike),code:ob[ii].code,expiration:new Date(ob[ii].expiration + "")});
+          ii++;
+
+        }
+        this.PutMonthsContracts.set(this.MonthArray[d2.getMonth()],ccp);
+        this.PUT_CONTRACT_DATA = [];
+
+
+
+        //console.log(message.calls[this.MonthArray[d.getMonth()]]);
+        //console.log(this.CONTRACT_DATA);
+        //this.timePeriods.push(this.MonthArray[d.getMonth()]);
         i++;
 
       }
@@ -180,7 +216,7 @@ export class OptionlistComponent implements OnInit {
         }
         this.MonthsContracts.set(this.MonthArray[d.getMonth()],cc);
         this.CONTRACT_DATA = [];
-        this.pusherService.SymbolSubject.next({symbol:this.currentCompany});
+
 
 
         //console.log(message.calls[this.MonthArray[d.getMonth()]]);
@@ -189,6 +225,40 @@ export class OptionlistComponent implements OnInit {
         i++;
 
       }
+      i = 0;
+      for(let months in message.puts)
+      {
+        var d2 = new Date((Date.now()));
+        d2 = new Date(d2.setMonth(d2.getMonth()+i));
+        this.timePeriods[i] =  this.MonthArray[d2.getMonth()];
+        let ii = 0;
+        let currentMonth =  message.puts[""+this.MonthArray[d2.getMonth()]];
+
+        let ccp = [];
+        for(let c in currentMonth)
+        {
+          //console.log(c[ii]);
+          let ob = currentMonth;
+          ccp.push({strike:parseFloat(ob[ii].strike),code:ob[ii].code,expiration:new Date(ob[ii].expiration + "")});
+          ii++;
+
+        }
+        this.PutMonthsContracts.set(this.MonthArray[d2.getMonth()],ccp);
+        this.PUT_CONTRACT_DATA = [];
+
+
+
+        //console.log(message.calls[this.MonthArray[d.getMonth()]]);
+        //console.log(this.CONTRACT_DATA);
+        //this.timePeriods.push(this.MonthArray[d.getMonth()]);
+        i++;
+
+      }
+
+
+
+
+      this.pusherService.SymbolSubject.next({symbol:this.currentCompany});
       console.log("dict\n")
       console.log(this.MonthsContracts);
 
@@ -240,6 +310,8 @@ export class OptionlistComponent implements OnInit {
         this.showSpinner = false;
         console.log(test.chunk);
         this.REC_DATA = test.chunk;
+        this.GraphLoading = false;
+        this.GraphLoaded = true;
 
         stockChart(this.chartRef.nativeElement, {
           plotOptions: {
@@ -287,6 +359,12 @@ export class OptionlistComponent implements OnInit {
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);
   }
+  PutSelected(text:any)
+  {
+    this.PUT_CONTRACT_DATA = this.PutMonthsContracts.get(text);
+    this.PutMonthSelected = true;
+
+  }
 
   CallSelected(text:any)
   {
@@ -297,13 +375,11 @@ export class OptionlistComponent implements OnInit {
 
   logThis(text:any,code:any)
   {
-    //console.log(text,code);
+    console.log(text);
     console.log(code);
     this.pusherService.messages.next({channel:this.pusherService.channel,"data":{code:(code+""),symbol:(this.currentCompany)},event:"client-GraphDataRequest"});
-
-
-
-    this.CallMonthSelected = true;
+    this.GraphLoading = true;
+    this.GraphLoaded = false;
 
   }
 
@@ -326,6 +402,22 @@ export class OptionlistComponent implements OnInit {
     returns += "}"
     //console.log("fired");
     return returns;
+  }
+
+  resetSelection(s:string){
+    console.log(s);
+    if(s == "call")
+    {
+      console.log("yess call");
+      this.CallMonthSelected = false;
+      this.showSpinner = false;
+
+    }else{
+      console.log("not call");
+      this.PutMonthSelected = false;
+    }
+
+
   }
 
 

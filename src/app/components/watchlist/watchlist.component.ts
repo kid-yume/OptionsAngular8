@@ -252,6 +252,12 @@ public CleanMessage(message:string):string
     }
   }
 
+  getRow(x:any)
+  {
+    console.log(x);
+    this.pusherService.messages.next({channel:this.pusherService.channel,"data":{code:"",symbol:x.companyName},event:"client-CompanyChange"});
+  }
+
 
 
 
