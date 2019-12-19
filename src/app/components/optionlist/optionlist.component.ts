@@ -78,6 +78,12 @@ export class OptionlistComponent implements OnInit {
 
     this.pusherService.UpdateSubject.subscribe((message:any) => {
       console.log("updating...");
+      if(this.CallMonthSelected || this.PutMonthSelected)
+      {
+        this.resetSelection('call');
+        this.resetSelection('put');  
+
+      }
       this.RANK_DATA = message.rankhis;
       this.currentCompany = message.sym.symbol+"";
       console.log(message.sym);
@@ -192,6 +198,7 @@ export class OptionlistComponent implements OnInit {
         let enumerableKeys = [];
         for (let key in message.calls[""+this.MonthArray[d.getMonth()]]) {
           enumerableKeys.push(key);
+
         }
         for(let show in enumerableKeys)
         {
@@ -416,6 +423,7 @@ export class OptionlistComponent implements OnInit {
       console.log("not call");
       this.PutMonthSelected = false;
     }
+    this.GraphLoaded = false;
 
 
   }

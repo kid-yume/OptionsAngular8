@@ -1,3 +1,6 @@
+<div class="stock-holder" >
+  <app-stockgraph></app-stockgraph>
+<div>
 <div class="top-holder"  *ngIf="!PutMonthSelected">
   <span class="middle-align" >Calls: </span>
   <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">

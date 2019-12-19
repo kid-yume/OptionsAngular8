@@ -125,6 +125,7 @@ export class WatchlistComponent implements OnInit {
       {
         this.pusherService.InitialSubject.next({rankhis:test.rankHis,ranks:test.ranks,calls:test.calls,puts:test.puts});
       }else{
+
         test = test.chunk;
         this.pusherService.UpdateSubject.next({rankhis:test.rankHis,calls:test.calls,puts:test.puts,sym:test.symbol});
 

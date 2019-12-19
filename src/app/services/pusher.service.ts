@@ -45,6 +45,7 @@ export class PusherService {
   public InitialSubject = new Subject<any>();
   public SymbolSubject = new Subject<any>();
   public UpdateSubject = new Subject<any>();
+  public StockSubject = new Subject<any>();
   private subject: Subject<MessageEvent>;
   private subjectData: Subject<number>;
   public messages: Subject<any>  = new Subject<any>();
@@ -190,6 +191,12 @@ export class PusherService {
         var datas = data;
         //console.log(datas.data);
         this.HomeSubject.next({data:datas.data,update:1});
+        break;
+      case "client-StockGraphResponse":
+      var datas = data;
+      //console.log(datas.data);
+      //this.HomeSubject.next({data:datas.data,update:1,line:true});
+        this.StockSubject.next({datas.data});
         break;
 
 
