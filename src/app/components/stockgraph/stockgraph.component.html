@@ -1,3 +1,4 @@
 <div>
-  <div #stockChart class="stock-holder" [hidden]=!StockCompleted>
+  <div #stockChart class="stock-holder" [hidden]=!StockStarted></div>
+    <mat-spinner class="graph-loader" [style.display]="GraphLoading ? 'block' : 'none'" ></mat-spinner>
 <div>

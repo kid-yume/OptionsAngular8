@@ -193,10 +193,10 @@ export class PusherService {
         this.HomeSubject.next({data:datas.data,update:1});
         break;
       case "client-StockGraphResponse":
-      var datas = data;
-      //console.log(datas.data);
-      //this.HomeSubject.next({data:datas.data,update:1,line:true});
-        this.StockSubject.next({datas.data});
+        var datas = data;
+        //console.log(datas.data);
+        //this.HomeSubject.next({data:datas.data,update:1,line:true});
+        this.StockSubject.next(datas.data);
         break;
 
 

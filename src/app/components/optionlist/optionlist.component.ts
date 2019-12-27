@@ -47,6 +47,7 @@ export class OptionlistComponent implements OnInit {
   timePeriods = ["", "", ""];
   callExpDates = ["","",""];
   GraphDataLoading = true;
+  SelectedContract = "";
   REC_DATA:any  = [];
   RANK_DATA= [];
   CONTRACT_DATA: contractParams[] = [
@@ -81,11 +82,14 @@ export class OptionlistComponent implements OnInit {
       if(this.CallMonthSelected || this.PutMonthSelected)
       {
         this.resetSelection('call');
-        this.resetSelection('put');  
+        this.resetSelection('put');
 
       }
       this.RANK_DATA = message.rankhis;
       this.currentCompany = message.sym.symbol+"";
+      this.pusherService.StockSubject.next({sym:this.currentCompany,request:0});
+
+      //this.pusherService.StockSubject.messages.next({sym:})
       console.log(message.sym);
       let i = 0;
       for(let months in message.calls)
@@ -186,6 +190,8 @@ export class OptionlistComponent implements OnInit {
       let CurSym = message.ranks;
       this.RANK_DATA = message.rankhis;
       this.currentCompany = CurSym[0].symbol+"";
+      this.pusherService.StockSubject.next({sym:this.currentCompany,request:0});
+
       let i = 0;
       for(let months in message.calls)
       {
@@ -333,7 +339,7 @@ export class OptionlistComponent implements OnInit {
             },
 
             title: {
-                text: this.currentCompany+' Options'
+                text: this.currentCompany+' Options \n'+this.SelectedContract
             },
 
             series: [{
@@ -384,6 +390,7 @@ export class OptionlistComponent implements OnInit {
   {
     console.log(text);
     console.log(code);
+    this.SelectedContract = text;
     this.pusherService.messages.next({channel:this.pusherService.channel,"data":{code:(code+""),symbol:(this.currentCompany)},event:"client-GraphDataRequest"});
     this.GraphLoading = true;
     this.GraphLoaded = false;

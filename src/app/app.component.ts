@@ -19,6 +19,7 @@ export class AppComponent implements OnInit{
   showSpinner = true;
   count = 0;
   showCard = true;
+  top = 0;
 
   @ViewChild('bodyC',{static:true}) windowBody!: ElementRef
   @ViewChild('windowHeight',{static:true}) windowDim!: ElementRef
@@ -61,15 +62,25 @@ export class AppComponent implements OnInit{
  }
 
  @HostListener('window:scroll', ['$event'])
-   doSomething(event) {
+   public async doSomething(event) {
      // console.debug("Scroll Event", document.body.scrollTop);
      // see András Szepesházi's comment below
      //console.debug("Scroll Event", window.pageYOffset );
-     console.log("Scroll Event", window.pageYOffset );
+
      if( window.pageYOffset > 66 )
      {
+       let myDiv = document.getElementById('optionDivs');
+       //this.top = window.pageYOffset;
+       //console.log("Scroll Event", window.pageYOffset );
+       //console.log(myDiv.style);
+       //myDiv.style.top = (""+0+"px");
        this.optionsC.nativeElement.style.top = 0;
-       //this.optionsC.nativeElement.setProperty("top","0")
+       //myDiv.style.top = window.pageYOffset;
+       //this.optionsC.nativeElement.style.height = this.windowDim.nativeElement.offsetHeight+"px";
+
+       //myDiv.setProperty("top","0")
+     }else{
+
      }
    }
 
